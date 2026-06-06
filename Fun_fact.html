@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Random Fun Facts</title>
+	<style>
+		:root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--text:#e6eef6}
+		html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto, Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#071025 0%,#071820 100%);color:var(--text);display:flex;align-items:center;justify-content:center}
+		.wrap{width:min(760px,94%);text-align:center;padding:28px}
+		h1{margin:0 0 14px;font-size:clamp(20px,3vw,32px)}
+		.card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);padding:28px;border-radius:12px;min-height:120px;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1.4;box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+		.controls{margin-top:16px;display:flex;gap:10px;justify-content:center}
+		button{background:var(--accent);color:#042027;border:0;padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer}
+		button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.08);color:var(--text)}
+		.small{font-size:13px;color:rgba(230,238,246,0.8);margin-top:8px}
+		footer{margin-top:18px;font-size:13px;color:rgba(230,238,246,0.5)}
+	</style>
+</head>
+<body>
+	<main class="wrap">
+		<h1>Random Fun Facts</h1>
+		<div id="fact" class="card">Click "Show fact" or press Space to reveal a random fun fact.</div>
+
+		<div class="controls">
+			<button id="newFact">Show fact</button>
+			<button id="copy" class="secondary">Copy</button>
+		</div>
+		<div class="small">Tip: press <strong>Space</strong> to get another fact.</div>
+		<footer>Facts sourced from general trivia — enjoy and share!</footer>
+	</main>
+
+	<script>
+		const facts = [
+			"Honey never spoils — archaeologists have found edible honey in ancient Egyptian tombs.",
+			"A group of flamingos is called a 'flamboyance'.",
+			"Bananas are berries, but strawberries aren't.",
+			"Octopuses have three hearts and blue blood.",
+			"There are more possible chess games than atoms in the observable universe.",
+			"Wombat poop is cube-shaped.",
+			"A day on Venus is longer than a year on Venus.",
+			"The Eiffel Tower can be 15 cm taller during hot days due to thermal expansion.",
+			"Sea otters hold hands while sleeping so they don't drift apart.",
+			"The inventor of the Frisbee was turned into a Frisbee after he died — his ashes were molded into Frisbees.",
+			"Some turtles can breathe through their butts (cloacal respiration).",
+			"Scotland's national animal is the unicorn.",
+			"A single bolt of lightning contains enough energy to toast 100,000 slices of bread.",
+			"Butterflies taste with their feet.",
+			"The shortest war in history lasted 38–45 minutes (between Britain and Zanzibar, 1896).",
+			"Pineapples take about two years to grow.",
+			"The majority of your brain is fat — about 60%.",
+			"Sharks existed before trees did.",
+			"Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.",
+			"A bolt of lightning is five times hotter than the surface of the sun."
+		];
+
+		function pickRandom(){
+			return facts[Math.floor(Math.random()*facts.length)];
+		}
+
+		const factEl = document.getElementById('fact');
+		const newBtn = document.getElementById('newFact');
+		const copyBtn = document.getElementById('copy');
+
+		function showFact(){
+			const f = pickRandom();
+			factEl.textContent = f;
+		}
+
+		newBtn.addEventListener('click', showFact);
+		copyBtn.addEventListener('click', async ()=>{
+			try{
+				await navigator.clipboard.writeText(factEl.textContent);
+				copyBtn.textContent = 'Copied!';
+				setTimeout(()=>copyBtn.textContent='Copy',1200);
+			}catch(e){
+				alert('Copy failed — your browser may block clipboard access.');
+			}
+		});
+
+		document.addEventListener('keydown', e=>{
+			if(e.code === 'Space'){
+				e.preventDefault();
+				showFact();
+			}
+		});
+
+		// show an initial fact
+		showFact();
+	</script>
+</body>
+</html>
